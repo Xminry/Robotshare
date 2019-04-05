@@ -391,51 +391,51 @@ unsigned char Enemy()   //检测敌人
 }
 
 //蓝牙发送数据声明区
-	char ms1[]={"Systeminit"};
-	char ms2[]={"Qianshangtai"};
-	char ms3[]={"Jianceleitai"};
-	char ms4[]={"Zaitaixia"};
-  char ms5[]={"ZTXT0030"};
-	char ms6[]={"ZTXT0004"};
-	char ms7[]={"ZTXT1000"};
-	char ms8[]={"ZTXT0200"};
-	char ms9[]={"ZTXL1004"};
-	char ms10[]={"ZTXL1200"};	
-	char ms11[]={"ZTXL0030"};
-	char ms12[]={"ZTXL0034"};
-	char ms13[]={"ZTXD1030"};
-	char ms14[]={"ZTXD0204"};
-	char ms15[]={"ZTXL1204"};
-	char ms16[]={"ZTXL1230"};
-	char ms17[]={"ZTXL1034"};
-	char ms18[]={"ZTXL0234"};
-	char ms19[]={"ZTXT1200"};
-	char ms20[]={"ZTXT1004"};
-	char ms21[]={"ZTXT0230"};
-	char ms22[]={"ZTXT0034"};
-	char ms23[]={"ZTXerror"};
+	char ms1[]={"Systeminit "};
+	char ms2[]={"Qianshangtai "};
+	char ms3[]={"Jianceleitai "};
+	char ms4[]={"Zaitaixia "};
+  char ms5[]={"ZTXT0030 "};
+	char ms6[]={"ZTXT0004 "};
+	char ms7[]={"ZTXT1000 "};
+	char ms8[]={"ZTXT0200 "};
+	char ms9[]={"ZTXL1004 "};
+	char ms10[]={"ZTXL1200 "};	
+	char ms11[]={"ZTXL0030 "};
+	char ms12[]={"ZTXL0034 "};
+	char ms13[]={"ZTXD1030 "};
+	char ms14[]={"ZTXD0204 "};
+	char ms15[]={"ZTXL1204 "};
+	char ms16[]={"ZTXL1230 "};
+	char ms17[]={"ZTXL1034 "};
+	char ms18[]={"ZTXL0234 "};
+	char ms19[]={"ZTXT1200 "};
+	char ms20[]={"ZTXT1004 "};
+	char ms21[]={"ZTXT0230 "};
+	char ms22[]={"ZTXT0034 "};
+	char ms23[]={"ZTXerror "};
 	
-char ms24[]={"JCDR0000"};
-	char ms25[]={"JCDRQ1000"};
-	char ms26[]={"JCDR0200"};
-	char ms27[]={"JCDR0030"};
-	char ms28[]={"JCDR0004"};
-	char ms29[]={"JCDRQ1000"};
-	char ms30[]={"JCDRerror"};
+char ms24[]={"JCDR0000 "};
+	char ms25[]={"JCDRQ1000 "};
+	char ms26[]={"JCDR0200 "};
+	char ms27[]={"JCDR0030 "};
+	char ms28[]={"JCDR0004 "};
+	char ms29[]={"JCDRQ1000 "};
+	char ms30[]={"JCDRerror "};
 	
-	char ms31[]={"BY1000"};
-	char ms32[]={"BY0200"};
-	char ms33[]={"BY0030"};
-	char ms34[]={"BY0004"};
-	char ms35[]={"BY1200"};
-	char ms36[]={"BY0034"};
-	char ms37[]={"BY1004"};
-	char ms38[]={"BY0230"};
-	char ms39[]={"BYG01"};
-	char ms40[]={"BYG02"};
-	char ms41[]={"BYGerror"};
-	char ms42[]={"BYGZS"};
-	char ms43[]={"BYGYS"};
+	char ms31[]={"BY1000 "};
+	char ms32[]={"BY0200 "};
+	char ms33[]={"BY0030 "};
+	char ms34[]={"BY0004 "};
+	char ms35[]={"BY1200 "};
+	char ms36[]={"BY0034 "};
+	char ms37[]={"BY1004 "};
+	char ms38[]={"BY0230 "};
+	char ms39[]={"BYG01 "};
+	char ms40[]={"BYG02 "};
+	char ms41[]={"BYGerror "};
+	char ms42[]={"BYGZS "};
+	char ms43[]={"BYGYS "};
 	
 //主函数
 int main()
@@ -460,7 +460,7 @@ int main()
 	UP_delay_ms(1000);
 	
 	
-	UP_EnableBluetoothIT(9600);
+	UP_EnableBluetoothIT(19200);
 
 	UP_Bluetooth_Puts (ms1);
 

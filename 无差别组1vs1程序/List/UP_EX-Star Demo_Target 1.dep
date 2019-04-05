@@ -1,5 +1,5 @@
 Dependencies for Project 'UP_EX-Star Demo', Target 'Target 1': (DO NOT MODIFY !)
-F (..\src\main.c)(0x5CA716D9)(-c --cpu Cortex-M3 -D__EVAL -D__MICROLIB -g -O3 --apcs=interwork --split_sections -IC:\Users\admin\Desktop\Robotshare\无差别组1vs1程序\src\UpLib-I C:\Keil_v5\ARM\RV31\INC-I C:\Keil_v5\ARM\CMSIS\Include-I C:\Keil_v5\ARM\Inc\ST\STM32F10x-D__UVISION_VERSION="516" -DSTM32F10X_HD -DUSE_STDPERIPH_DRIVER-o ..\list\main.o --omf_browse ..\list\main.crf --depend ..\list\main.d)
+F (..\src\main.c)(0x5CA71D0E)(-c --cpu Cortex-M3 -D__EVAL -D__MICROLIB -g -O3 --apcs=interwork --split_sections -IC:\Users\admin\Desktop\Robotshare\无差别组1vs1程序\src\UpLib-I C:\Keil_v5\ARM\RV31\INC-I C:\Keil_v5\ARM\CMSIS\Include-I C:\Keil_v5\ARM\Inc\ST\STM32F10x-D__UVISION_VERSION="516" -DSTM32F10X_HD -DUSE_STDPERIPH_DRIVER-o ..\list\main.o --omf_browse ..\list\main.crf --depend ..\list\main.d)
 I (..\src\UPLib\\UP_System.h)(0x546450DA)
 I (..\src\UPLib\\STM32Lib\\stm32f10x.h)(0x5462FDF8)
 I (..\src\UPLib\\STM32Lib\\core_cm3.h)(0x5462FDF8)
