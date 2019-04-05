@@ -1,4 +1,8 @@
-#include"UPLib\\UP_System.h"
+#include "UPLib\\UP_System.h"
+#include "UP_Bluetooth.h"
+#include "UP_Globle.h"
+#include "UP_UART.h" 
+
 
 
 
@@ -43,28 +47,28 @@ int QX = 0;			//倾斜
 
 void zhong()    //上台默认动作
 {
-	UP_CDS_SetAngle(5, 100, 800);
-	UP_CDS_SetAngle(6, 940, 800);
-	UP_CDS_SetAngle(7, 940, 800);
-	UP_CDS_SetAngle(8, 80, 800);
+	UP_CDS_SetAngle(5, 384, 800);
+	UP_CDS_SetAngle(6, 640, 800);
+	UP_CDS_SetAngle(7, 640, 800);
+	UP_CDS_SetAngle(8, 384, 800);
 }
 
 void qding()  //收前爪
 {
-	UP_CDS_SetAngle(5, 900, 700);
-	UP_CDS_SetAngle(6, 140, 700);
-	UP_delay_ms(18);
-	UP_CDS_SetAngle(5, 900, 700);
-	UP_CDS_SetAngle(6, 140, 700);
+	UP_CDS_SetAngle(5, 1000, 800);
+	UP_CDS_SetAngle(6, 24, 800);
+	UP_delay_ms(10);
+	UP_CDS_SetAngle(5, 1000, 800);
+	UP_CDS_SetAngle(6, 24, 800);
 }
 
 void hding()  //收后爪
 {
-	UP_CDS_SetAngle(7, 10, 800);
-	UP_CDS_SetAngle(8, 1010, 800);
+	UP_CDS_SetAngle(7, 24, 800);
+	UP_CDS_SetAngle(8, 1000, 800);
 	UP_delay_ms(10);
-	UP_CDS_SetAngle(7, 1, 800);
-	UP_CDS_SetAngle(8, 1010, 800);
+	UP_CDS_SetAngle(7, 24, 800);
+	UP_CDS_SetAngle(8, 1000, 800);
 }
 
 void chanzi()  //上台后铲子状态
@@ -110,9 +114,9 @@ qianshangtai()  //前上台
 		move(500,500);//对准擂台
 		UP_delay_ms(700);
 		qding();//前爪支地
-		UP_delay_ms(900);
-		UP_CDS_SetAngle(5, 100, 512);
-		UP_CDS_SetAngle(6, 940, 512);
+		UP_delay_ms(800);
+		UP_CDS_SetAngle(5, 384, 512);
+		UP_CDS_SetAngle(6, 640, 512);
 		UP_delay_ms(500);
 		hding();//支后腿
 		UP_delay_ms(800);
@@ -133,8 +137,8 @@ houshangtai()  //后上台
 		UP_delay_ms(600);
 		hding();//前爪支地
 		UP_delay_ms(900);
-		UP_CDS_SetAngle(7, 940, 512);
-		UP_CDS_SetAngle(8, 80, 512);
+		UP_CDS_SetAngle(7, 640, 512);
+		UP_CDS_SetAngle(8, 384, 512);
 		UP_delay_ms(500);
 		qding();//支后腿
 		UP_delay_ms(800);
@@ -386,6 +390,12 @@ unsigned char Enemy()   //检测敌人
 	}
 }
 
+//蓝牙发送数据声明区
+	char ms1[]={"系统已启动"};
+	char ms2[]={"前上台"};
+	char ms3[]={"检测擂台"};
+	char ms4[]={"在台下"};
+
 //主函数
 int main()
 {
@@ -408,6 +418,13 @@ int main()
 	zhong();
 	UP_delay_ms(1000);
 	
+	
+	UP_EnableBluetoothIT(9600);
+
+	UP_Bluetooth_Puts (ms1);
+
+
+	
   while(1)
 	{
 		if((UP_ADC_GetValue(2) < 1000)||(UP_ADC_GetValue(4) < 1000))
@@ -418,11 +435,13 @@ int main()
 	}
 	
 	qianshangtai();
+	UP_Bluetooth_Puts (ms2);
 	
 while(1)
 {	
 	nStage = Stage();	//检测擂台
 	
+	UP_Bluetooth_Puts (ms3);
  	
  	UP_LCD_ShowInt(0, 0, nStage);
 		switch(nStage)
@@ -430,6 +449,8 @@ while(1)
 		  case 0:	//在台下
 // 				move(500,500);	
 // 				UP_delay_ms(200);
+			UP_Bluetooth_Puts (ms4);
+			
 				nFence = Fence();	//检测边沿
 			 	UP_LCD_ClearScreen();
 			

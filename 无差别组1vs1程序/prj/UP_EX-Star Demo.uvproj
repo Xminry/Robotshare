@@ -371,7 +371,7 @@
               <MiscControls></MiscControls>
               <Define>STM32F10X_HD,USE_STDPERIPH_DRIVER</Define>
               <Undefine></Undefine>
-              <IncludePath></IncludePath>
+              <IncludePath>C:\Users\admin\Desktop\Robotshare\无差别组1vs1程序\src\UpLib</IncludePath>
             </VariousControls>
           </Cads>
           <Aads>
