@@ -1,8 +1,4 @@
-#include "UPLib\\UP_System.h"
-#include "UP_Bluetooth.h"
-#include "UP_Globle.h"
-#include "UP_UART.h" 
-
+#include"UPLib\\UP_System.h"
 
 
 
@@ -44,39 +40,47 @@ int nd = 0;			//前搁浅计时
 int ne = 8;			//后搁浅计时
 
 int QX = 0;			//倾斜
+int s5=243;
+int x5=840;
+int s6=800;
+int x6=223;
+int s7=843;
+int x7=243;
+int shang8=200;
+int x8=800;
 
 void zhong()    //上台默认动作
 {
-	UP_CDS_SetAngle(5, 384, 800);
-	UP_CDS_SetAngle(6, 640, 800);
-	UP_CDS_SetAngle(7, 640, 800);
-	UP_CDS_SetAngle(8, 384, 800);
+	UP_CDS_SetAngle(5, s5, 800);
+	UP_CDS_SetAngle(6, s6, 800);
+	UP_CDS_SetAngle(7, s7, 800);
+	UP_CDS_SetAngle(8, shang8, 800);
 }
 
 void qding()  //收前爪
 {
-	UP_CDS_SetAngle(5, 1000, 800);
-	UP_CDS_SetAngle(6, 24, 800);
+	UP_CDS_SetAngle(5, x5, 800);
+	UP_CDS_SetAngle(6, x6, 800);
 	UP_delay_ms(10);
-	UP_CDS_SetAngle(5, 1000, 800);
-	UP_CDS_SetAngle(6, 24, 800);
+	UP_CDS_SetAngle(5, x5, 800);
+	UP_CDS_SetAngle(6, x6, 800);
 }
 
 void hding()  //收后爪
 {
-	UP_CDS_SetAngle(7, 24, 800);
-	UP_CDS_SetAngle(8, 1000, 800);
+	UP_CDS_SetAngle(7, x7, 800);
+	UP_CDS_SetAngle(8, x8, 800);
 	UP_delay_ms(10);
-	UP_CDS_SetAngle(7, 24, 800);
-	UP_CDS_SetAngle(8, 1000, 800);
+	UP_CDS_SetAngle(7, x7, 800);
+	UP_CDS_SetAngle(8, x8, 800);
 }
 
 void chanzi()  //上台后铲子状态
 {
-	UP_CDS_SetAngle(5, 780, 800);
-	UP_CDS_SetAngle(6, 244, 800);
-	UP_CDS_SetAngle(7, 244, 800);
-	UP_CDS_SetAngle(8, 780, 800);
+	UP_CDS_SetAngle(5, 602, 800);
+	UP_CDS_SetAngle(6, 388, 800);
+	UP_CDS_SetAngle(7, 392, 800);
+	UP_CDS_SetAngle(8, 632, 800);
 }
 
 void move(int forward,int turn)
@@ -106,28 +110,29 @@ void move(int forward,int turn)
 }
 
 
-qianshangtai()  //前上台
+void qianshangtai()  //前上台
 {		move(0,0);	//停下来，防止前一状态是转弯改变上台方向
 		UP_delay_ms(100);
 		zhong();//四支架抬起为支擂台做准备
 		UP_delay_ms(400);
 		move(500,500);//对准擂台
-		UP_delay_ms(700);
+		UP_delay_ms(700);//700
 		qding();//前爪支地
-		UP_delay_ms(800);
-		UP_CDS_SetAngle(5, 384, 512);
-		UP_CDS_SetAngle(6, 640, 512);
+		//move(500,500);
+		UP_delay_ms(900);
+		UP_CDS_SetAngle(5, s5, 512);
+		UP_CDS_SetAngle(6, s6, 512);
 		UP_delay_ms(500);
 		hding();//支后腿
 		UP_delay_ms(800);
 		zhong();
 		//chanzi();//收后爪到铲子状态
-		UP_delay_ms(1000);
+		UP_delay_ms(200);//1000
 		move(0,0);	//
 		UP_delay_ms(500);
 }
 
-houshangtai()  //后上台
+void houshangtai()  //后上台
 {
 		move(0,0);	//停下来，防止前一状态是转弯改变上台方向
 		UP_delay_ms(100);
@@ -137,14 +142,14 @@ houshangtai()  //后上台
 		UP_delay_ms(600);
 		hding();//前爪支地
 		UP_delay_ms(900);
-		UP_CDS_SetAngle(7, 640, 512);
-		UP_CDS_SetAngle(8, 384, 512);
+		UP_CDS_SetAngle(7, s7, 512);
+		UP_CDS_SetAngle(8, shang8, 512);
 		UP_delay_ms(500);
 		qding();//支后腿
 		UP_delay_ms(800);
 		zhong();
 		//chanzi();//收后爪到铲子状态
-		UP_delay_ms(1000);
+		UP_delay_ms(200);//
 		move(0,0);	//
 		UP_delay_ms(500);
 }
@@ -348,95 +353,63 @@ unsigned char Edge()  //检测边缘
 			return 102;		//错误
 		}
 }
-
-unsigned char Enemy()   //检测敌人
-{
-	AD1 = UP_ADC_GetValue(1); // 前红外光电传感器
-	AD2 = UP_ADC_GetValue(2); //右红外光电传感器
-	AD3 = UP_ADC_GetValue(3); //后红外光电传感器
-	AD4 = UP_ADC_GetValue(4); //左红外光电传感器
-	AD5 = UP_ADC_GetValue(5); //前红外测距传感器
-	
-	if ((AD1 > 100)&&(AD2 > 100)&&(AD3 > 100)&&(AD4 > 100))
-	{
-		return 0;  //无敌人
-	}
-	if ((AD1 < 100)&&(AD2 > 100)&&(AD3 > 100)&&(AD4 > 100))
-	{
-		if (AD5>1000)
-		{
-			return 11;  //前方是箱子
-		}
-		else
-			{
-				return 1;   //前方有棋子
-			}
-	}
-	if ((AD1 > 100)&&(AD2 < 100)&&(AD3 > 100)&&(AD4 > 100))
-	{
-		return 2;   //右侧有敌人或棋子
-	}
-	if ((AD1 > 100)&&(AD2 > 100)&&(AD3 < 100)&&(AD4 > 100))
-	{
-		return 3;   //后方有敌人或棋子
-	}
-	if ((AD1 > 100)&&(AD2 > 100)&&(AD3 > 100)&&(AD4 < 100))
-	{
-		return 4;   //左侧有敌人或棋子
-	}
-	else
-	{
-		return 103;//错误
-	}
+unsigned char Enemy() //????
+{ Qian = (!UP_ADC_GetIO(1))|UP_ADC_GetIO(5);
+You = (!UP_ADC_GetIO(2))|UP_ADC_GetIO(6);
+Hou = (!UP_ADC_GetIO(3))|UP_ADC_GetIO(7);
+Zuo = (!UP_ADC_GetIO(4))|UP_ADC_GetIO(8);
+if (Qian==1)
+{return 1;} //?????
+if (You==1)
+{return 2;} //?????
+if(Hou==1)
+{return 3;} //?????
+if(Zuo==1)
+{return 4;} //?????
+else
+{return 103;} //??
 }
+//unsigned char Enemy()   //检测敌人
+//{
+//	AD1 = UP_ADC_GetValue(1); // 前红外光电传感器
+//	AD2 = UP_ADC_GetValue(2); //右红外光电传感器
+//	AD3 = UP_ADC_GetValue(3); //后红外光电传感器
+//	AD4 = UP_ADC_GetValue(4); //左红外光电传感器
+//	AD5 = UP_ADC_GetValue(5); //前红外测距传感器
+//	
+//	if ((AD1 > 100)&&(AD2 > 100)&&(AD3 > 100)&&(AD4 > 100))
+//	{
+//		return 0;  //无敌人
+//	}
+//	if ((AD1 < 100)&&(AD2 > 100)&&(AD3 > 100)&&(AD4 > 100))
+//	{
+//		if (AD5>340)//1000
+//		{
+//			return 11;  //前方是箱子
+//		}
+//		else
+//			{
+//				return 1;   //前方有棋子
+//			}
+//	}
+//	if ((AD1 > 100)&&(AD2 < 100)&&(AD3 > 100)&&(AD4 > 100))
+//	{
+//		return 2;   //右侧有敌人或棋子
+//	}
+//	if ((AD1 > 100)&&(AD2 > 100)&&(AD3 < 100)&&(AD4 > 100))
+//	{
+//		return 3;   //后方有敌人或棋子
+//	}
+//	if ((AD1 > 100)&&(AD2 > 100)&&(AD3 > 100)&&(AD4 < 100))
+//	{
+//		return 4;   //左侧有敌人或棋子
+//	}
+//	else
+//	{
+//		return 103;//错误
+//	}
+//}
 
-//蓝牙发送数据声明区
-	char ms1[]={"Systeminit "};
-	char ms2[]={"Qianshangtai "};
-	char ms3[]={"Jianceleitai "};
-	char ms4[]={"Zaitaixia "};
-  char ms5[]={"ZTXT0030 "};
-	char ms6[]={"ZTXT0004 "};
-	char ms7[]={"ZTXT1000 "};
-	char ms8[]={"ZTXT0200 "};
-	char ms9[]={"ZTXL1004 "};
-	char ms10[]={"ZTXL1200 "};	
-	char ms11[]={"ZTXL0030 "};
-	char ms12[]={"ZTXL0034 "};
-	char ms13[]={"ZTXD1030 "};
-	char ms14[]={"ZTXD0204 "};
-	char ms15[]={"ZTXL1204 "};
-	char ms16[]={"ZTXL1230 "};
-	char ms17[]={"ZTXL1034 "};
-	char ms18[]={"ZTXL0234 "};
-	char ms19[]={"ZTXT1200 "};
-	char ms20[]={"ZTXT1004 "};
-	char ms21[]={"ZTXT0230 "};
-	char ms22[]={"ZTXT0034 "};
-	char ms23[]={"ZTXerror "};
-	
-char ms24[]={"JCDR0000 "};
-	char ms25[]={"JCDRQ1000 "};
-	char ms26[]={"JCDR0200 "};
-	char ms27[]={"JCDR0030 "};
-	char ms28[]={"JCDR0004 "};
-	char ms29[]={"JCDRQ1000 "};
-	char ms30[]={"JCDRerror "};
-	
-	char ms31[]={"BY1000 "};
-	char ms32[]={"BY0200 "};
-	char ms33[]={"BY0030 "};
-	char ms34[]={"BY0004 "};
-	char ms35[]={"BY1200 "};
-	char ms36[]={"BY0034 "};
-	char ms37[]={"BY1004 "};
-	char ms38[]={"BY0230 "};
-	char ms39[]={"BYG01 "};
-	char ms40[]={"BYG02 "};
-	char ms41[]={"BYGerror "};
-	char ms42[]={"BYGZS "};
-	char ms43[]={"BYGYS "};
-	
 //主函数
 int main()
 {
@@ -459,13 +432,6 @@ int main()
 	zhong();
 	UP_delay_ms(1000);
 	
-	
-	UP_EnableBluetoothIT(19200);
-
-	UP_Bluetooth_Puts (ms1);
-
-
-	
   while(1)
 	{
 		if((UP_ADC_GetValue(2) < 1000)||(UP_ADC_GetValue(4) < 1000))
@@ -474,24 +440,18 @@ int main()
 		}
 		UP_delay_ms(10);
 	}
-	
-	qianshangtai();
-	UP_Bluetooth_Puts (ms2);
+		qianshangtai();
+	//qianshangtai();
 	
 while(1)
 {	
 	nStage = Stage();	//检测擂台
-	
-	//UP_Bluetooth_Puts (ms3);
- 	
  	UP_LCD_ShowInt(0, 0, nStage);
 		switch(nStage)
 		{
 		  case 0:	//在台下
 // 				move(500,500);	
 // 				UP_delay_ms(200);
-			UP_Bluetooth_Puts (ms4);
-			
 				nFence = Fence();	//检测边沿
 			 	UP_LCD_ClearScreen();
 			
@@ -501,12 +461,9 @@ while(1)
 				switch(nFence)
 				{
 					case 1:	//在台下后方对擂台
-						
-					UP_Bluetooth_Puts (ms5);
 						houshangtai();
 						break;
 					case 2:	//左侧对擂台
-						UP_Bluetooth_Puts (ms6);
 						move(0,0);	
 						UP_delay_ms(200);
 						while(1)
@@ -529,11 +486,9 @@ while(1)
 						}
 						break;
 					case 3:	//前方对擂台
-						UP_Bluetooth_Puts (ms7);
 						qianshangtai();
 						break;
 					case 4:	//右侧对擂台
-						UP_Bluetooth_Puts (ms8);
 						move(0,0);	
 						UP_delay_ms(200);
 						while(1)
@@ -556,63 +511,52 @@ while(1)
 						}
 						break;
 					case 5:	//前左检测到围栏
-						UP_Bluetooth_Puts (ms9);
 						move(-400,-400);	
 				  	UP_delay_ms(400);
 						break;
 					case 6:	//前右检测到围栏
-						UP_Bluetooth_Puts (ms10);
 						move(-400,-400);	
  						UP_delay_ms(400);
  						break;
 					case 7:	//后有检测到围栏
-						UP_Bluetooth_Puts (ms11);
 						move(400,400);	
  						UP_delay_ms(400);
 						break;
 					case 8:	//后左检测到围栏
-						UP_Bluetooth_Puts (ms12);
 						move(400,400);	
  						UP_delay_ms(400);
 						break;
 					case 9:	//前方或后方有台上敌人
-						UP_Bluetooth_Puts (ms13);
 						move(500,-500);	
 						UP_delay_ms(300);
 						move(400,400);	
 						UP_delay_ms(400);
 						break;
 					case 10:	//左侧或右侧有台上敌人
-						UP_Bluetooth_Puts (ms14);
 						move(400,400);	
 						UP_delay_ms(400);
 						break;
 					case 11:	//前方、左侧和右侧检测到围栏
-					UP_Bluetooth_Puts (ms15);	
-					move(-400,-300);	
+						move(-400,-300);	
 						UP_delay_ms(500);
 						move(-400,400);	
 						UP_delay_ms(300);
 						break;
 					case 12:	//前右后检测到围栏
-						UP_Bluetooth_Puts (ms16);
 						move(300,600);	
 						UP_delay_ms(400);
 						break;
 					case 13:	//前左后检测到围栏
-						UP_Bluetooth_Puts (ms17);
 						move(600,300);	
 						UP_delay_ms(400);
 						break;
 					case 14:	//右左后检测到围栏
-						UP_Bluetooth_Puts (ms18);
 						move(-400,400);	
 						UP_delay_ms(200);
 						move(400,400);	
 						UP_delay_ms(300);
 						break;
 					case 15:	//前右检测到擂台
-						UP_Bluetooth_Puts (ms19);
 						move(0,0);	
 						UP_delay_ms(200);
 						while(1)
@@ -635,7 +579,6 @@ while(1)
 						}
 						break;
 					case 16:	//前左检测到擂台
-						UP_Bluetooth_Puts (ms20);
 						move(0,0);	
 						UP_delay_ms(200);
 						while(1)
@@ -658,7 +601,6 @@ while(1)
 						}
 						break;
 						case 17:	//在台下，后方和右侧对擂台其他传感器没检测到
-						UP_Bluetooth_Puts (ms21);
 						move(0,0);	
 						UP_delay_ms(200);
 						while(1)
@@ -703,7 +645,6 @@ while(1)
 						}
 						break;
 					case 101:	//错误
-						UP_Bluetooth_Puts (ms23);
 						UP_delay_ms(10);
 						break;
 
@@ -711,6 +652,7 @@ while(1)
 				break;
 				
 			case 1:	//在台上
+				chanzi();
 				na=0;
 				nb=0;
 				nEdge = Edge();	//检测边缘
@@ -730,42 +672,34 @@ while(1)
 					switch(nEnemy)
 						{
 							case 0:	//无敌人
-								UP_Bluetooth_Puts (ms24); 
-								move(400,400);	
-								UP_delay_ms(10);
+								move(-400,-400);	
+								UP_delay_ms(200);//10
 								break;
 							case 1:	//前有qizi
-						   UP_Bluetooth_Puts (ms25); 
-
-								move(800,800);	
+								move(600,600);	
 								UP_delay_ms(20);
 								break;
 							case 2:	//右侧有敌人
-								UP_Bluetooth_Puts (ms26);
 								move(-400,-400);	
 								UP_delay_ms(200);
 								move(400,-400);	
 								UP_delay_ms(300);
 								break;
 							case 3:	//后方有敌人
-								UP_Bluetooth_Puts (ms27);
 								move(-400,400);	
-								UP_delay_ms(800);
+								UP_delay_ms(400);//800
 								break;
 							case 4:	//左侧有敌人
-								UP_Bluetooth_Puts (ms28);
 								move(-400,-400);	
 								UP_delay_ms(200);
 								move(-400,400);	
 								UP_delay_ms(300);
 								break;
 							case 11:	//前方检测到箱子
-								UP_Bluetooth_Puts (ms29);
-								move(800,800);	
+								move(600,600);	
 								UP_delay_ms(20);
 								break;
 							case 103:	//错误
-								UP_Bluetooth_Puts (ms30);
 								move(400,400);	
 								UP_delay_ms(10);
 								break;
@@ -773,35 +707,31 @@ while(1)
 
 						break;
 					case 1:	//左前检测到边缘
-						UP_Bluetooth_Puts (ms31);
 						move(-400,-400);	
 						UP_delay_ms(400);
 						move(400,-400);	
 						UP_delay_ms(300);
 						break;
 					case 2:	//右前检测到边缘
-						UP_Bluetooth_Puts (ms32);
 						move(-400,-400);	
 						UP_delay_ms(400);
 						move(400,-400);	
 						UP_delay_ms(400);
 						break;
 					case 3:	//右后检测到边缘
-						UP_Bluetooth_Puts (ms33);
 						move(400,400);	
 						UP_delay_ms(500);
 						move(400,-400);	
 						UP_delay_ms(500);
 						break;
 					case 4:	//左后检测到边缘
-						UP_Bluetooth_Puts (ms34);
 						move(400,400);	
 						UP_delay_ms(500);
 						move(400,-400);	
 						UP_delay_ms(500);
 						break;
 					case 5:	//前方两个检测到边缘
-						UP_Bluetooth_Puts (ms35);
+
 						move(-500,-500);	
 						UP_delay_ms(700);
 						move(500,-500);	
@@ -820,26 +750,22 @@ while(1)
 // 						}
 // 						break;
 					case 6:	//后方两个检测到边缘
-						UP_Bluetooth_Puts (ms36);
 						move(500,500);	
 						UP_delay_ms(500);
 						break;
 					case 7:	//左侧两个检测到边缘
-						UP_Bluetooth_Puts (ms37);
 						move(500,-400);	
 						UP_delay_ms(500);
 						move(400,400);	
 						UP_delay_ms(300);
 						break;
 					case 8:	//右侧两个检测到边缘
-						UP_Bluetooth_Puts (ms38);
 						move(-400,500);	
 						UP_delay_ms(500);
 						move(400,400);	
 						UP_delay_ms(300);
 						break;
 					case 9:	//搁浅前在底下
-						UP_Bluetooth_Puts (ms39);
 						nd++;
 						if (nd>20)
 						{
@@ -867,7 +793,6 @@ while(1)
 						
 						break;
 					case 10:	//搁浅前在上面
-						UP_Bluetooth_Puts (ms40);
 						ne++;
 						if (ne>20)
 						{
@@ -891,7 +816,6 @@ while(1)
 						}
 						break;
 					case 102:	//错误
-						UP_Bluetooth_Puts (ms41);
 						move(500,500);
 						UP_delay_ms(10);
 						break;
@@ -899,7 +823,6 @@ while(1)
 				}
 						break;
 				case 3://搁浅左侧在擂台右侧在地面
-					UP_Bluetooth_Puts (ms42);
 					na++;
 					if (na==350)
 					{
@@ -919,7 +842,6 @@ while(1)
 					}
 					break;
 				case 4://搁浅右侧在擂台左侧在地面
-					UP_Bluetooth_Puts (ms43);
 					na++;
 					if(na==350)
 					{	
